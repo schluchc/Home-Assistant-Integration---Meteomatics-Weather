@@ -9,7 +9,31 @@ permissions:
   contents: write
 
 jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Validate manifest version matches tag
+        shell: bash
+        run: |
+          set -euo pipefail
+          tag="${GITHUB_REF_NAME}"
+          if [[ "${tag}" != v* ]]; then
+            echo "Expected tag to start with 'v', got: ${tag}" >&2
+            exit 1
+          fi
+          tag_version="${tag#v}"
+          manifest_version="$(python -c "import json; print(json.load(open('custom_components/meteomatics_weather/manifest.json'))['version'])")"
+          if [[ "${tag_version}" != "${manifest_version}" ]]; then
+            echo "Tag version (${tag_version}) does not match manifest version (${manifest_version})." >&2
+            exit 1
+          fi
+          echo "Tag and manifest versions match: ${tag_version}"
+
   release:
+    needs: validate
     runs-on: ubuntu-latest
     steps:
       - name: Create GitHub release
