@@ -1,0 +1,8 @@
+{
+  "domain": "meteomatics_weather",
+  "name": "Meteomatics Weather",
+  "config_flow": true,
+  "documentation": "https://www.meteomatics.com/en/api/",
+  "version": "0.1.0",
+  "iot_class": "cloud_polling"
+}

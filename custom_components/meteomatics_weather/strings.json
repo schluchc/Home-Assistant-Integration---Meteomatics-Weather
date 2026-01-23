@@ -1,0 +1,20 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect to Meteomatics",
+        "description": "Enter your Meteomatics credentials.",
+        "data": {
+          "name": "Name",
+          "username": "Username",
+          "password": "Password"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect.",
+      "invalid_auth": "Invalid authentication.",
+      "unknown": "Unexpected error."
+    }
+  }
+}
