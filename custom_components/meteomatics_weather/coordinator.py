@@ -26,6 +26,10 @@ from .const import (
     PARAMETERS_CURRENT,
     PARAMETERS_DAILY,
     PARAMETERS_HOURLY,
+    PRECIP_PROB_DAILY_PARAMETER,
+    PRECIP_PROB_HOURLY_PARAMETER,
+    PRECIP_PROB_MAX,
+    PRECIP_PROB_MIN,
     TIMEOUT_SECONDS,
     WEATHER_SYMBOL_MAP,
 )
@@ -195,6 +199,20 @@ def _as_float(value: Any) -> float | None:
         return None
 
 
+def _normalize_probability(value: float | None) -> int | None:
+    if value is None:
+        raise ValueError("Missing precipitation probability value")
+    if PRECIP_PROB_MAX <= PRECIP_PROB_MIN:
+        raise ValueError("Invalid precipitation probability range")
+    if value < PRECIP_PROB_MIN or value > PRECIP_PROB_MAX:
+        raise ValueError(
+            f"Precipitation probability {value} outside range "
+            f"{PRECIP_PROB_MIN}-{PRECIP_PROB_MAX}"
+        )
+    normalized = ((value - PRECIP_PROB_MIN) / (PRECIP_PROB_MAX - PRECIP_PROB_MIN)) * 100.0
+    return int(round(normalized))
+
+
 def _first_value(series_map: dict[str, dict[datetime, float | None]], key: str) -> float | None:
     series = series_map.get(key)
     if not series:
@@ -272,6 +290,13 @@ def _build_hourly_forecast(
         precipitation = _value_at(series_map, "precip_1h:mm", when)
         if precipitation is not None:
             entry["precipitation"] = precipitation
+        precipitation_probability = _value_at(
+            series_map, PRECIP_PROB_HOURLY_PARAMETER, when
+        )
+        if precipitation_probability is not None:
+            entry["precipitation_probability"] = _normalize_probability(
+                precipitation_probability
+            )
         wind_speed = _value_at(series_map, "wind_speed_10m:ms", when)
         if wind_speed is not None:
             entry["wind_speed"] = wind_speed
@@ -310,5 +335,12 @@ def _build_daily_forecast(
         precipitation = _value_at(series_map, "precip_24h:mm", when)
         if precipitation is not None:
             entry["precipitation"] = precipitation
+        precipitation_probability = _value_at(
+            series_map, PRECIP_PROB_DAILY_PARAMETER, when
+        )
+        if precipitation_probability is not None:
+            entry["precipitation_probability"] = _normalize_probability(
+                precipitation_probability
+            )
         forecast.append(entry)
     return forecast

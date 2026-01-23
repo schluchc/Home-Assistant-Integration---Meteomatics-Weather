@@ -20,6 +20,10 @@ HOURLY_FORECAST_DAYS = 2
 DAILY_FORECAST_DAYS = 7
 
 CLOUD_COVER_PARAMETER = "effective_cloud_cover:p"
+PRECIP_PROB_HOURLY_PARAMETER = "prob_precip_1h:p"
+PRECIP_PROB_DAILY_PARAMETER = "prob_precip_24h:p"
+PRECIP_PROB_MIN = 1.0
+PRECIP_PROB_MAX = 95.0
 
 PARAMETERS_CURRENT = [
     "t_2m:C",
@@ -39,6 +43,7 @@ PARAMETERS_HOURLY = [
     "wind_speed_10m:ms",
     "wind_dir_10m:d",
     "precip_1h:mm",
+    PRECIP_PROB_HOURLY_PARAMETER,
     CLOUD_COVER_PARAMETER,
     "weather_symbol_1h:idx",
 ]
@@ -47,6 +52,7 @@ PARAMETERS_DAILY = [
     "t_min_2m_24h:C",
     "t_max_2m_24h:C",
     "precip_24h:mm",
+    PRECIP_PROB_DAILY_PARAMETER,
     "weather_symbol_24h:idx",
 ]
 
