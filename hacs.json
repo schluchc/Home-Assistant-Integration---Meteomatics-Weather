@@ -1,0 +1,6 @@
+{
+  "name": "Meteomatics Weather",
+  "domains": ["meteomatics_weather"],
+  "iot_class": "cloud_polling",
+  "render_readme": true
+}
