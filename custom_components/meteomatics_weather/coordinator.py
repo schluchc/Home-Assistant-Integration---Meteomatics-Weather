@@ -195,13 +195,6 @@ def _as_float(value: Any) -> float | None:
         return None
 
 
-def _octas_to_percent(value: float | None) -> float | None:
-    if value is None:
-        return None
-    percent = (value / 8.0) * 100.0
-    return max(0.0, min(100.0, percent))
-
-
 def _first_value(series_map: dict[str, dict[datetime, float | None]], key: str) -> float | None:
     series = series_map.get(key)
     if not series:
@@ -258,9 +251,7 @@ def _build_current(series_map: dict[str, dict[datetime, float | None]]) -> dict[
         "wind_speed": _first_value(series_map, "wind_speed_10m:ms"),
         "wind_bearing": _first_value(series_map, "wind_dir_10m:d"),
         "precipitation": _first_value(series_map, "precip_1h:mm"),
-        "cloud_coverage": _octas_to_percent(
-            _first_value(series_map, CLOUD_COVER_PARAMETER)
-        ),
+        "cloud_coverage": _first_value(series_map, CLOUD_COVER_PARAMETER),
         "condition": _map_condition(_first_value(series_map, "weather_symbol_1h:idx")),
     }
 
@@ -293,9 +284,7 @@ def _build_hourly_forecast(
         pressure = _value_at(series_map, "msl_pressure:hPa", when)
         if pressure is not None:
             entry["pressure"] = pressure
-        cloud_coverage = _octas_to_percent(
-            _value_at(series_map, CLOUD_COVER_PARAMETER, when)
-        )
+        cloud_coverage = _value_at(series_map, CLOUD_COVER_PARAMETER, when)
         if cloud_coverage is not None:
             entry["cloud_coverage"] = cloud_coverage
         forecast.append(entry)

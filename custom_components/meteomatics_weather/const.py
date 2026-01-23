@@ -19,7 +19,7 @@ DEFAULT_SCAN_INTERVAL = timedelta(minutes=10)
 HOURLY_FORECAST_DAYS = 2
 DAILY_FORECAST_DAYS = 7
 
-CLOUD_COVER_PARAMETER = "effective_cloud_cover:octas"
+CLOUD_COVER_PARAMETER = "effective_cloud_cover:p"
 
 PARAMETERS_CURRENT = [
     "t_2m:C",
