@@ -3,6 +3,6 @@
   "name": "Meteomatics Weather",
   "config_flow": true,
   "documentation": "https://www.meteomatics.com/en/api/",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "iot_class": "cloud_polling"
 }
